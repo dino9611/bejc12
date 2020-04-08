@@ -5,6 +5,9 @@ const router=express.Router()
 
 router.get('/foto',Fotocontrollers.getfoto)
 router.post('/foto',Fotocontrollers.postphoto)
+router.delete('/foto/:id',Fotocontrollers.deletefoto)
+router.put('/foto/:id',Fotocontrollers.editphoto)
+router.get('/kataenc',Fotocontrollers.encryptkata)
 
 
 module.exports=router
