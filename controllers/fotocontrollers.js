@@ -2,6 +2,7 @@ const {db}=require('./../connection')
 const {uploader}=require('./../helper/uploader')
 const fs=require('fs')
 const crypto=require('crypto')
+const transporter=require('./../helper/mailer')
 
 
 module.exports={
@@ -127,5 +128,22 @@ module.exports={
         const {kata}=req.query
         const kataencript=crypto.createHmac('sha256','puripuri').update(kata).digest('hex')
         res.send(`<h1>${kataencript} dari ${kata} dengan panjang length =${kataencript.length} </h1>`)
+    },
+    kirimemail:(req,res)=>{
+        const unyu=fs.readFileSync('unyu.html','utf8')
+        // console.log(typeof(unyu))
+        var mailoptions={
+            from:'Hokage <aldinorahman36@gmail.com>',
+            to:'aldinorahman36@gmail.com',
+            subject:'Misi Level A',
+            html:unyu,
+        }
+        transporter.sendMail(mailoptions,(err,result)=>{
+            if(err){
+                console.log(err)
+                return res.status(500).send({status:err})
+            }
+            res.status(200).send({status:'success',result})
+        })
     }
 }
