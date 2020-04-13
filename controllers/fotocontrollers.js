@@ -51,7 +51,7 @@ module.exports={
         })
     },
     deletefoto:(req,res)=>{
-        const {id}=req.params
+        const {id}=req.params//req.params.id
         var sql=`select * from foto where id=${id}`
         db.query(sql,(err,result)=>{
             if (err) res.status(500).send(err)

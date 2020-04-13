@@ -94,5 +94,15 @@ module.exports={
         })
 
 
+    },
+    keeplogin:(req,res)=>{
+        const {idusers}=req.params
+        var sql=`select * from users where id=${idusers}`
+        db.query(sql,(err,result)=>{
+            if(err){
+                return res.status(500).send(err)
+            }
+            return res.status(200).send(result[0])
+        })
     }
 }

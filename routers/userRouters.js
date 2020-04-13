@@ -9,5 +9,5 @@ router.post('/users',Usercontrollers.addusers)
 router.put('/users/:id',Usercontrollers.editusers)
 router.delete('users/:id',Usercontrollers.deleteusers)
 router.post('/register',Usercontrollers.userregister)
-
+router.get('/keeplogin/:idusers',Usercontrollers.keeplogin)
 module.exports=router
