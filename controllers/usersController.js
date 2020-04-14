@@ -1,7 +1,7 @@
 const {db} =require('./../connection')
 const transporter=require('./../helper/mailer')
 const encrypt=require('./../helper/crypto')
-
+const {createJWTToken}=require('./../helper/jwt')
 module.exports={
     allusers:(req,res)=>{
         db.query('select * from users',(err,result)=>{
@@ -83,6 +83,7 @@ module.exports={
                         <a href=${LinkVerifikasi}>MInimales verified</a>`,                        
                     },(err,result2)=>{
                         if (err) return res.status(500).send(err)
+
                         sql=`select * from users where id=${result1.insertId}`
                         db.query(sql,(err,result3)=>{
                             if (err) return res.status(500).send(err)
@@ -104,5 +105,47 @@ module.exports={
             }
             return res.status(200).send(result[0])
         })
+    },
+    userverified:(req,res)=>{
+        const {userid,password}=req.body
+        var obj={
+            verified:1
+        }
+        var sql=`update users set ? where id=${userid} and password='${password}'`
+        db.query(sql,obj,(err,result)=>{
+            if(err){
+                return res.status(500).send(err)
+            }
+            sql=`select * from users where id=${userid}`
+            db.query(sql,(err,result1)=>{
+                if(err){
+                    return res.status(500).send(err)
+                }
+                return res.status(200).send(result1[0])
+            })
+        })
+    },
+    login:(req,res)=>{
+        const {password,username}=req.query
+        const hashpass=encrypt(password)
+        var sql=`select * from users where username='${username}' and password='${hashpass}'`
+        db.query(sql,(err,result)=>{
+            if(err){
+                return res.status(500).send(err)
+            }
+            if(result.length){
+                return res.status(200).send(result[0])//jika user ada
+            }else{
+                return res.status(500).send({message:'user nggak ada'})//jika user nggak adal8
+            }
+        })
+    },
+    generatetoken:(req,res)=>{
+        const token=createJWTToken({id:1,username:'dino'})
+        res.status(200).send({token})
+    },
+    tokenberubah:(req,res)=>{
+        console.log(req.user)
+        res.send({data:req.user})
     }
 }
