@@ -16,11 +16,12 @@ app.get('/',(req,res)=>{
     return res.send('<h1>Selamat datang di Api JC12</h1>')
 })
 
-const {UserRouters,FotoRouters}=require('./routers')
+const {UserRouters,FotoRouters,MovieRouters}=require('./routers')
 
 
 app.use('/users',UserRouters)
 app.use('/foto',FotoRouters)
+app.use('/movie',MovieRouters)
 
 
 app.listen(PORT,()=>console.log('server jalan di '+PORT))
